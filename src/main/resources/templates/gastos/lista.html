@@ -15,6 +15,31 @@
     </div>
 
     <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+    <div th:if="${errorFiltro}" class="alert alert-warning" th:text="${errorFiltro}"></div>
+
+    <form th:action="@{/gastos}" th:object="${filtro}" method="get" class="card card-body shadow-sm mb-3">
+        <div class="row g-2 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label mb-1">Desde</label>
+                <input type="date" th:field="*{desde}" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label mb-1">Hasta</label>
+                <input type="date" th:field="*{hasta}" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label mb-1">Categoría</label>
+                <select th:field="*{categoriaId}" class="form-select">
+                    <option value="">Todas</option>
+                    <option th:each="c : ${categorias}" th:value="${c.id}" th:text="${c.nombre}"></option>
+                </select>
+            </div>
+            <div class="col-md-3 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+                <a th:href="@{/gastos}" class="btn btn-outline-secondary">Limpiar</a>
+            </div>
+        </div>
+    </form>
 
     <div class="card shadow-sm">
         <div class="table-responsive">
@@ -45,7 +70,7 @@
                     </td>
                 </tr>
                 <tr th:if="${pagina.empty}">
-                    <td colspan="5" class="text-center text-muted py-4">Aún no tienes gastos registrados</td>
+                    <td colspan="5" class="text-center text-muted py-4">No hay gastos para mostrar</td>
                 </tr>
                 </tbody>
             </table>
@@ -55,13 +80,15 @@
     <nav th:if="${pagina.totalPages > 1}" class="mt-3">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${pagina.first} ? 'disabled'">
-                <a class="page-link" th:href="@{/gastos(page=${pagina.number - 1})}">Anterior</a>
+                <a class="page-link"
+                th:href="@{/gastos(page=${pagina.number - 1}, desde=${filtro.desde}, hasta=${filtro.hasta}, categoriaId=${filtro.categoriaId})}">Anterior</a>
             </li>
             <li class="page-item disabled">
                 <span class="page-link" th:text="${pagina.number + 1} + ' de ' + ${pagina.totalPages}"></span>
             </li>
             <li class="page-item" th:classappend="${pagina.last} ? 'disabled'">
-                <a class="page-link" th:href="@{/gastos(page=${pagina.number + 1})}">Siguiente</a>
+                <a class="page-link"
+                th:href="@{/gastos(page=${pagina.number + 1}, desde=${filtro.desde}, hasta=${filtro.hasta}, categoriaId=${filtro.categoriaId})}">Siguiente</a>
             </li>
         </ul>
     </nav>

@@ -24,7 +24,7 @@ public class Gasto {
     private String descripcion;
 
     @NotNull
-    @Positive
+    @Positive//Validacion: debe ser mayor que cero
     @Column(precision = 12, scale = 2)
     private BigDecimal monto;
 
@@ -36,6 +36,7 @@ public class Gasto {
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
+    //optional=false: un gasto siempre debe tener un dueño
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
