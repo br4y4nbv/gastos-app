@@ -3,19 +3,36 @@ package com.br4y4nbv.gastos_app.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration // Clase que define configuración y "beans" (objetos gestionados por Spring)
+@Configuration
 public class SecurityConfig {
 
-    // TEMPORAL: se reemplazara por el login real despues
+    // BCrypt cifra la contraseña con "sal" aleatoria: dos usuarios con la misma
+    // contraseña generan hashes distintos, y el hash no se puede revertir.
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-    // @Bean: Spring ejecuta este método al arrancar y registra el resultado.
-    // SecurityFilterChain define las reglas de seguridad HTTP.
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // permitAll: cualquiera puede entrar a cualquier ruta (solo mientras se desarrolla)
-        http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+        http
+            .authorizeHttpRequests(auth -> auth
+                // Rutas públicas
+                .requestMatchers("/login", "/registro", "/error").permitAll()
+                // Todo lo demás exige sesión iniciada
+                .anyRequest().authenticated())
+            .formLogin(form -> form
+                .loginPage("/login")                // Nuestra página, no la de Spring
+                .usernameParameter("email")         // El campo del formulario se llama "email"
+                .defaultSuccessUrl("/gastos", true) // Tras entrar, siempre a /gastos
+                .permitAll())
+            .logout(logout -> logout
+                .logoutSuccessUrl("/login?logout")
+                .permitAll());
         return http.build();
     }
 }
