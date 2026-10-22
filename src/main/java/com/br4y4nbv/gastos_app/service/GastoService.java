@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -26,9 +27,11 @@ public class GastoService {
     private final CategoriaRepository categoriaRepository;
     private final UsuarioRepository usuarioRepository;
 
-    // TEMPORAL: Despues saldrá del usuario autenticado
+    // Spring Security guarda al usuario autenticado en el SecurityContext de la petición.
+    // getName() devuelve el "username" que pusimos en UsuarioDetailsService: el email.
     private Usuario usuarioActual() {
-        return usuarioRepository.findByEmail("demo@gastos.com").orElseThrow();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return usuarioRepository.findByEmail(email).orElseThrow();
     }
 
     // readOnly = true: avisa a la BD que solo se lee (pequeña optimización)
