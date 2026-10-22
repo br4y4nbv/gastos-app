@@ -4,11 +4,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+//Big Decimal, para el dinero, nunca double. Evita errores de redondeo
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
+//Nombres de tabla en plural para evitar choques con palabras reservadas
 @Table(name = "gastos")
+//Getter y Setter, no Data. genera equals y hascode que dan problemas con entidades JPA
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor @Builder
 public class Gasto {
@@ -28,6 +31,7 @@ public class Gasto {
     @NotNull
     private LocalDate fecha;
 
+    //FetcgType.LAZY para no cargar datos innecesarios
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
