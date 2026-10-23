@@ -26,7 +26,7 @@ public class SecurityConfig {
                 // Todo lo demás exige sesión iniciada
                 .anyRequest().authenticated())
             .formLogin(form -> form
-                .loginPage("/login")                // Nuestra página, no la de Spring
+                .defaultSuccessUrl("/", true)               
                 .usernameParameter("email")         // El campo del formulario se llama "email"
                 .defaultSuccessUrl("/gastos", true) // Tras entrar, siempre a /gastos
                 .permitAll())
