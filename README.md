@@ -60,7 +60,7 @@ La aplicación queda en http://localhost:8080. Con H2 en memoria, los datos se b
 
 ## Próximos pasos
 
-- [ ] Dashboard con totales del mes y gráfico por categoría
+- [x] Dashboard con totales del mes y gráfico por categoría
 - [ ] PostgreSQL y Docker Compose
 - [ ] GitHub Actions
 - [ ] Despliegue público
