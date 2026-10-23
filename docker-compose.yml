@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: ${DB_NAME:-gastos}
+      POSTGRES_USER: ${DB_USER:-gastos}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-gastos_local}
+    volumes:
+      - pgdata:/var/lib/postgresql/data    # Los datos sobreviven a reinicios del contenedor
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-gastos} -d ${DB_NAME:-gastos}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy    # La app espera a que PostgreSQL esté realmente listo
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_URL: jdbc:postgresql://db:5432/${DB_NAME:-gastos}   # "db" es el nombre del servicio
+      DB_USER: ${DB_USER:-gastos}
+      DB_PASSWORD: ${DB_PASSWORD:-gastos_local}
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:

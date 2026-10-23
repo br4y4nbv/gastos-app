@@ -1,0 +1,18 @@
+# Se activa con SPRING_PROFILES_ACTIVE=prod
+# Las credenciales llegan por variables de entorno: nunca van escritas en el código
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update    # Crea o ajusta las tablas al arrancar (suficiente para este proyecto)
+    show-sql: false
+  h2:
+    console:
+      enabled: false
+
+server:
+  port: ${PORT:8080}      

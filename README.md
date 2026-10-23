@@ -29,13 +29,25 @@ Para probar la aplicación sin registrarte:
 
 Es una cuenta pública de prueba: no guardes información personal en ella.
 
-## Ejecutar en local
+## Ejecutar con Docker
 
-Requisitos: JDK 21.
+Requisitos: Docker y Docker Compose.
 
 ```bash
-git clone https://github.com/TU-USUARIO/gastos-app.git
+git clone https://github.com/br4y4nbv/gastos-app.git
 cd gastos-app
+docker compose up --build
+```
+
+La aplicación queda en http://localhost:8080 con PostgreSQL y datos persistentes.
+
+Para cambiar las credenciales de la base de datos, copia `.env.example` a `.env` y edítalo.
+
+## Ejecutar en desarrollo (sin Docker)
+
+Requisitos: JDK 21. Usa H2 en memoria: los datos se borran al reiniciar.
+
+```bash
 ./mvnw spring-boot:run
 ```
 
@@ -60,7 +72,7 @@ La aplicación queda en http://localhost:8080. Con H2 en memoria, los datos se b
 
 ## Próximos pasos
 
-- [ ] Dashboard con totales del mes y gráfico por categoría
-- [ ] PostgreSQL y Docker Compose
+- [x] Dashboard con totales del mes y gráfico por categoría
+- [x] PostgreSQL y Docker Compose
 - [ ] GitHub Actions
 - [ ] Despliegue público
