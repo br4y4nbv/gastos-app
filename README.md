@@ -2,6 +2,8 @@
 
 Aplicación web de gastos personales con Spring Boot, Thymeleaf y Docker.
 
+![CI](https://github.com/br4y4nbv/gastos-app/actions/workflows/ci.yml/badge.svg)
+
 ## Características
 
 - Registro e inicio de sesión con contraseñas cifradas (BCrypt)
@@ -74,5 +76,5 @@ La aplicación queda en http://localhost:8080. Con H2 en memoria, los datos se b
 
 - [x] Dashboard con totales del mes y gráfico por categoría
 - [x] PostgreSQL y Docker Compose
-- [ ] GitHub Actions
+- [x] GitHub Actions
 - [ ] Despliegue público
