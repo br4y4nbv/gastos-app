@@ -9,6 +9,7 @@ import com.br4y4nbv.gastos_app.repository.GastoRepository;
 import com.br4y4nbv.gastos_app.repository.UsuarioRepository;
 import com.br4y4nbv.gastos_app.repository.GastoSpecs;
 import com.br4y4nbv.gastos_app.dto.GastoFiltro;
+import com.br4y4nbv.gastos_app.exception.RecursoNoEncontradoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -56,7 +57,7 @@ public class GastoService {
     public GastoForm obtenerForm(Long id) {
         // Busca por id Y usuario: si el gasto no es del usuario, lanza error
         Gasto gasto = gastoRepository.findByIdAndUsuarioId(id, usuarioActual().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Gasto no encontrado"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Gasto no encontrado"));
 
         GastoForm form = new GastoForm();
         form.setId(gasto.getId());
@@ -80,14 +81,14 @@ public class GastoService {
         Gasto gasto = (form.getId() == null)
                 ? new Gasto()
                 : gastoRepository.findByIdAndUsuarioId(form.getId(), usuario.getId())
-                        .orElseThrow(() -> new IllegalArgumentException("Gasto no encontrado"));
+                        .orElseThrow(() -> new RecursoNoEncontradoException("Gasto no encontrado"));
 
         // Busca la categoría y verifica que pertenezca al usuario.
         // Sin este filtro, alguien podría manipular el formulario y usar
         // una categoría de otra persona.
         Categoria categoria = categoriaRepository.findById(form.getCategoriaId())
                 .filter(c -> c.getUsuario().getId().equals(usuario.getId()))
-                .orElseThrow(() -> new IllegalArgumentException("Categoría inválida"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Categoría inválida"));
 
         // Copia los datos del formulario a la entidad
         gasto.setDescripcion(form.getDescripcion());
