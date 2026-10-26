@@ -15,4 +15,6 @@ spring:
       enabled: false
 
 server:
-  port: ${PORT:8080}      
+  port: ${PORT:8080}
+  # Respeta los encabezados X-Forwarded-* del proxy (HTTPS, host)
+  forward-headers-strategy: framework   
