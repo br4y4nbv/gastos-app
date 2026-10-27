@@ -4,6 +4,16 @@ Aplicación web de gastos personales con Spring Boot, Thymeleaf y Docker.
 
 ![CI](https://github.com/br4y4nbv/gastos-app/actions/workflows/ci.yml/badge.svg)
 
+**Demo en vivo:** https://gastos-app-1prj.onrender.com
+
+> La demo está en un plan gratuito: si lleva un rato sin visitas, la primera carga puede tardar cerca de un minuto en despertar.
+
+![Dashboard](docs/img/dashboard.png)
+
+| Lista con filtros | Formulario con validaciones |
+|---|---|
+| ![Lista](docs/img/lista.png) | ![Formulario](docs/img/form.png) |
+
 ## Características
 
 - Registro e inicio de sesión con contraseñas cifradas (BCrypt)
@@ -20,6 +30,13 @@ Aplicación web de gastos personales con Spring Boot, Thymeleaf y Docker.
 - H2 (desarrollo) y PostgreSQL (producción)
 - Maven
 - JUnit 5
+
+## Arquitectura de despliegue
+
+- **Aplicación**: contenedor Docker (build multi-stage) en Render
+- **Base de datos**: PostgreSQL gestionado en Neon
+- **Configuración**: perfiles de Spring y variables de entorno; ninguna credencial en el repositorio
+- **CI**: GitHub Actions compila y ejecuta las pruebas en cada push
 
 ## Usuario de demostración
 
@@ -77,4 +94,4 @@ La aplicación queda en http://localhost:8080. Con H2 en memoria, los datos se b
 - [x] Dashboard con totales del mes y gráfico por categoría
 - [x] PostgreSQL y Docker Compose
 - [x] GitHub Actions
-- [ ] Despliegue público
+- [x] Despliegue público (Render + Neon)
